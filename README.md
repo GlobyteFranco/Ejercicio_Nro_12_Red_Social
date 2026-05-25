@@ -5,3 +5,6 @@ Una empresa nos contrata para diseñar su software de tipo red social. Un usuari
 estar conectado con otros usuarios por medio de relaciones, amistad, familia, etc. El
 usuario puede definir sus relaciones. A la vez un usuario puede tener relaciones no solo
 con otros usuarios sino también con grupos o páginas web.
+# Estrategia
+Vamos a crear usuarios, grupos y paginas web. Van a estar alojados en un repositorio. El cliente va a tener la opcion de registrarse y de ahi empezar a agregar gente. Como va a ser un usuario va a poder ver una lista de sus seguidores.
+* Factory Method: Para desacoplar la logica de creacion de conectables del Main
