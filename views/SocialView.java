@@ -16,48 +16,48 @@ public class SocialView {
 
     public void startProgram() {
         System.out.println("Bienvenido/a al programa!!");
-
+        displayActionMenu();
     }
 
     public boolean checkRegister() {
         return controller.checkRegister();
     }
 
+    // !Luego de registrarme me sigue presentando el menu de invitado
     public void displayActionMenu() {
-        if (controller.checkRegister()) {
-            System.out.println(
-                    "Action Menu \n\n [1]--> Check available connections \n [2]--> Add Connection \n [3]--> Check Self Connections \n [4]--> Remove Connection \n [5]--> Check Users Info \n [0]--> Terminar Programa");
-            while (true) {
-                try {
-                    System.out.println("Elija un valor...");
-                    int selectedOption = scanner.nextInt();
-                    while (!(selectedOption >= 0 && selectedOption <= 5)) {
-                        System.out.println("Valor fuera de rango, por favor intentelo de nuevo");
-                        selectedOption = scanner.nextInt();
-                    }
-                    chooseView(selectedOption + 1);
-
-                } catch (Exception e) {
-                    System.out.println("El valor elegido fue invalido, por favor elija uno correcto");
+        while (!controller.checkRegister()) {
+            try {
+                System.out.println(
+                        "Action Menu \n\n  [1]--> Check available connections \n[2]-->Sign up\n  [0]--> End Program");
+                System.out.println("Elija un valor...");
+                int selectedOption = scanner.nextInt();
+                while (!(selectedOption >= 0 && selectedOption <= 2)) {
+                    System.out.println("Valor fuera de rango, por favor intentelo de nuevo");
+                    selectedOption = scanner.nextInt();
                 }
+                chooseView(selectedOption);
+
+            } catch (Exception e) {
+                System.out.println("El valor elegido fue invalido, por favor elija uno correcto");
+                scanner.nextLine();
             }
-        } else {
+        }
 
-            System.out.println(
-                    "Action Menu \n\n  [1]-->Sign up\n [2]--> Check available connections \n [0]--> Terminar Programa");
-            while (true) {
-                try {
-                    System.out.println("Elija un valor...");
-                    int selectedOption = scanner.nextInt();
-                    while (!(selectedOption >= 0 && selectedOption <= 2)) {
-                        System.out.println("Valor fuera de rango, por favor intentelo de nuevo");
-                        selectedOption = scanner.nextInt();
-                    }
-                    chooseView(selectedOption);
-
-                } catch (Exception e) {
-                    System.out.println("El valor elegido fue invalido, por favor elija uno correcto");
+        while (controller.checkRegister()) {
+            try {
+                System.out.println(
+                        "Action Menu \n\n [1]--> Check available connections \n [3]--> Add Connection \n [4]--> Check Self Connections \n [5]--> Remove Connection \n [6]--> Check Users Info \n [0]--> End Program");
+                System.out.println("Elija un valor...");
+                int selectedOption = scanner.nextInt();
+                while (!(selectedOption >= 0 && selectedOption <= 6)) {
+                    System.out.println("Valor fuera de rango, por favor intentelo de nuevo");
+                    selectedOption = scanner.nextInt();
                 }
+                chooseView(selectedOption);
+
+            } catch (Exception e) {
+                System.out.println("El valor elegido fue invalido, por favor elija uno correcto");
+                scanner.nextLine();
             }
         }
 
@@ -66,15 +66,14 @@ public class SocialView {
     public void chooseView(int value) {
         int selectedValue;
         switch (value) {
-            case 1:
+
+            case 1:// *Mostrar conexiones disponibles */
                 showAvailableConnections(controller.obtainAllConnectables());
-                displayActionMenu();
                 break;
-            case 2:
+            case 2:// *Menu para iniciar sesion */
                 showSingUpMenu();
-                displayActionMenu();
                 break;
-            case 3:
+            case 3:// *Sumar conexion */
                 selectedValue = showAndSelectConnections();
                 while (!controller.checkUserExistance(selectedValue)) {
                     System.out.println("The selected connection couldnt be found, please try again");
@@ -84,14 +83,11 @@ public class SocialView {
 
                 controller.addConnection(selectedValue, enumConnectionType);
 
-                displayActionMenu();
-
                 break;
-            case 4:
-                showAndSelectConnections();
-                displayActionMenu();
+            case 4:// *Obtener conexiones propias */
+                showSelfConnections();
                 break;
-            case 5:
+            case 5:// *Remover Conexion*/
                 System.out.println("Enter the connection to remove");
                 selectedValue = showAndSelectSelfConnections();
                 while (!controller.checkUserSelfExistance(selectedValue)) {
@@ -101,10 +97,10 @@ public class SocialView {
                 controller.removeSelfConnection(selectedValue);
                 // llamar al metodo de controller para borrar el seguidor
                 break;
-            case 6:
+            case 6:// *Obtener informacion propia */
                 obtainAndShowRegisteredUserInfo();
                 break;
-            case 0:
+            case 0:// *Terminar programa */
                 byeBye();
                 break;
 
@@ -121,6 +117,7 @@ public class SocialView {
 
     public void showSingUpMenu() {
         System.out.println("Go on and enter your personal data");
+        scanner.nextLine();
         while (true) {
             try {
                 System.out.println("Name: ");
@@ -129,12 +126,14 @@ public class SocialView {
                 String lastName = scanner.nextLine();
                 System.out.println("Age: ");
                 int age = scanner.nextInt();
-                while (age < 18 && age > 99) {
-                    System.out.println("cmooonnnn, set a real age bro");
+                while (age < 18 || age > 99) {
+                    System.out.println("cmooonnnn, set a real age dude");
                     age = scanner.nextInt();
                 }
 
                 controller.signUpUser(name, lastName, age);
+                scanner.nextLine();
+                break;
             } catch (Exception e) {
                 System.out.println("Forbidden value entered... Try again");
             }
@@ -143,6 +142,7 @@ public class SocialView {
 
     public void byeBye() {
         System.out.println("Thanks for playing!!");
+        System.exit(0);
     }
 
     public int showAndSelectConnections() {
@@ -156,6 +156,7 @@ public class SocialView {
                 break;
             } catch (Exception e) {
                 System.out.println("Forbidden value... Please try again");
+                scanner.nextLine();
             }
         }
         return selectedValue;
@@ -197,6 +198,7 @@ public class SocialView {
                         }
                     } catch (Exception e) {
                         System.err.println("forbidden value entered");
+                        scanner.nextLine();
                     }
                 }
             case "GROUP":
@@ -226,6 +228,8 @@ public class SocialView {
                         }
                     } catch (Exception e) {
                         System.err.println("forbidden value entered");
+                        scanner.nextLine();
+
                     }
                 }
             case "WEB_PAGE":
@@ -252,6 +256,8 @@ public class SocialView {
                         }
                     } catch (Exception e) {
                         System.err.println("forbidden value entered");
+                        scanner.nextLine();
+
                     }
                 }
 
@@ -271,9 +277,16 @@ public class SocialView {
                 break;
             } catch (Exception e) {
                 System.out.println("Forbidden value... Please try again");
+                scanner.nextLine();
+
             }
         }
         return selectedValue;
+    }
+
+    public void showSelfConnections() {
+        showAvailableConnections(controller.obtainSelfConnections());
+
     }
 
     public void obtainAndShowRegisteredUserInfo() {

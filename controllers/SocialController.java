@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import models.enums.WebPageConnection;
 import models.interfaces.TypeConnection;
 import repositories.ConnectablesRepositorie;
 
+// if(!checkRegister())return"No hay usuario registrado";
 public class SocialController {
     ConnectablesRepositorie repositorie;
 
@@ -26,7 +28,6 @@ public class SocialController {
         repositorie.setRegisteredUser(new User(repositorie.getId(), name, lastName, age));
     }
 
-    // todo arreglar el horror indescriptible que se aprecia aca
     public boolean addConnection(int id, String stringedTypeConnection) {
 
         TypeConnection typeConnection = checkTypeConnectionType(stringedTypeConnection);// validar de que tipo de
@@ -47,6 +48,8 @@ public class SocialController {
     }
 
     public TypeConnection checkTypeConnectionType(String param) {
+        if (param == null)
+            return WebPageConnection.MODERADOR;
         switch (param.toUpperCase()) {
             case "MIEMBRO":
 
@@ -100,14 +103,20 @@ public class SocialController {
     }
 
     public boolean checkUserExistance(int id) {
+        if (!checkRegister())
+            return false;
         return repositorie.checkExistance(id);
     }
 
     public boolean checkUserSelfExistance(int id) {
+        if (!checkRegister())
+            return false;
         return repositorie.getRegisteredUser().searchById(id);
     }
 
     public Map<String, String> obtainSelfConnections() {
+        if (!checkRegister())
+            return new HashMap<>();
         return repositorie.getRegisteredUser().checkAllConnections().entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> entry.toString(),
@@ -116,11 +125,14 @@ public class SocialController {
     }
 
     public void removeSelfConnection(int id) {
+        if (!checkRegister())
+            return;
         repositorie.getRegisteredUser().removeConnection(id);
-        // usar el repositorio para llamar al metodo que borre el usuario
     }
 
     public String obtainAllUserInfo() {
+        if (!checkRegister())
+            return "No hay usuario registrado";
         return repositorie.getRegisteredUser().toString();
     }
 }

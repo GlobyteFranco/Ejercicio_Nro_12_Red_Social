@@ -13,6 +13,14 @@ public class ConnectablesRepositorie {
     private Map<Connectable, ConnectionsEnum> mapRepositorie = new HashMap<>();
     private int id = 0;
 
+    public ConnectablesRepositorie() {
+
+    }
+
+    public ConnectablesRepositorie(Map<Connectable, ConnectionsEnum> mapEntry) {
+        this.mapRepositorie = mapEntry;
+    }
+
     public boolean addConnectableToMap(Connectable connectable, ConnectionsEnum connectionsEnum) {
         if (mapRepositorie.containsKey(connectable)) {
             mapRepositorie.put(connectable, connectionsEnum);

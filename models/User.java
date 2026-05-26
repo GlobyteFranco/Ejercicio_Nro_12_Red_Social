@@ -106,8 +106,7 @@ public class User implements Connectable {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", edad=" + edad + ", connectionsList="
-                + connectionsList + "]";
+        return "User [id=" + id + ", name=" + name + ", lastName=" + lastName + ", edad=" + edad + "]";
     }
 
 }

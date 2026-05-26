@@ -89,7 +89,7 @@ public class Group implements Connectable {
 
     @Override
     public String toString() {
-        return "Group [id=" + id + ", description=" + description + ", connectionsList=" + connectionsList + "]";
+        return "Group [id=" + id + ", description=" + description + ", connectionsList=" + "]";
     }
 
 }

@@ -78,7 +78,7 @@ public class WebPage implements Connectable {
 
     @Override
     public String toString() {
-        return "WebPage [id=" + id + ", url=" + url + ", connectionsList=" + connectionsList + "]";
+        return "WebPage [id=" + id + ", url=" + url + ", connectionsList=" + "]";
     }
 
 }
